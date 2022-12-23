@@ -9,9 +9,6 @@ typedef vector<vi> vvi;
 typedef vector<vector<vector<int>>> vv3d;
 #define ALL(x) x.begin(),x.end()
 #define UNIQUE(x) (x).resize(unique(ALL(x)) - x.begin())
-#define pb push_back;
-#define pf push_front;
-#define FOR(init, exc,itr) for(int i = init; i < exc; i+=itr)
 
 void printVector(vector<int> a) {
   for (int i = 0; i < a.size(); i++) {
@@ -72,6 +69,20 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  string s; cin >> s;
+  unordered_map<string, int> ct;
+  unordered_map<char, int> ct1;
+  ct1['P'] = 0; ct1['K'] = 0; ct1['H'] = 0; ct1['T'] = 0;
+  for (int i = 0; i < s.length() - 3 + 1; i += 3) {
+    string t = s.substr(i, 3);
+    ct1[s[i]]++;
+    if (ct.count(t) == 0) ct[t] = 1;
+    else {
+      cout << "GRESKA" << endl;
+      return;
+    }
+  }
+  printf("%d %d %d %d\n", 13 - ct1['P'], 13 - ct1['K'], 13 - ct1['H'], 13 - ct1['T']);
 }
 
 int main(){

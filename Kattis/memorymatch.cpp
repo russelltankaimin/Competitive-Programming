@@ -9,9 +9,6 @@ typedef vector<vi> vvi;
 typedef vector<vector<vector<int>>> vv3d;
 #define ALL(x) x.begin(),x.end()
 #define UNIQUE(x) (x).resize(unique(ALL(x)) - x.begin())
-#define pb push_back;
-#define pf push_front;
-#define FOR(init, exc,itr) for(int i = init; i < exc; i+=itr)
 
 void printVector(vector<int> a) {
   for (int i = 0; i < a.size(); i++) {
@@ -71,7 +68,48 @@ void debug(T a, bool submit){
   cout <<(!submit ? " ]" : "")<< endl;
 }
 
+struct hash_pair {
+    template <class T1, class T2>
+    size_t operator()(const pair<T1, T2>& p) const {
+        auto hash1 = hash<T1>{}(p.first);
+        auto hash2 = hash<T2>{}(p.second);
+
+        if (hash1 != hash2) {
+            return hash1 ^ hash2;
+        }
+          return hash1;
+    }
+};
+
 void solve() {
+  int N; cin >> N;
+  int m; cin >> m;
+  int score = 0;
+  unordered_map<pair<int, string>, int, hash_pair> a;
+  vector<pair<int, string>> aa, bb;
+  for (int i = 0; i < m; i++) {
+    int c1, c2; string name1, name2; cin >> c1 >> c2 >> name1 >> name2;
+    if (name1.compare(name2) == 0) {
+      a.erase({c1, name1});
+      a.erase({c2, name2});
+      score++;
+    } else {
+      pair<int, string> a1 = {c1, name1}; pair<int, string> a2 = {c2, name2};
+      a[a1] = 1; a[a2] = 1;
+    }
+  }
+  unordered_map<string, int> freq;
+  for (auto p : a) {
+    if (freq.count(p.first.second) == 0) {
+      freq[p.first.second] = 1;
+    } else {
+      freq[p.first.second]++;
+    }
+  }
+  for (auto p : freq) {
+    score += p.second / 2;
+  }
+  cout << score << endl;
 }
 
 int main(){
