@@ -69,11 +69,35 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int n, m;
+  while(true) {
+    cin >> n >> m;
+    if (m == 0 && n == 0) {
+      return;
+    }
+    vector<pair<int, int>> possible;
+    for (int i = 0; i < n; i++) {
+      int a,b; cin >> a >> b;
+      if (a <= m) {
+        pair<int, int> p = {a, b};
+        possible.push_back(p);
+      }
+    }
+    if (possible.size() == 0) {
+      printf("No suitable tickets offered\n"); 
+      continue;
+    }
+    sort(ALL(possible), [&](pair<int, int> a, pair<int, int> b) {
+        if (a.second * b.first == a.first * b.second) {
+          return a.first > b.first;
+        }
+      return a.second * b.first < a.first * b.second;
+        });
+    printf("Buy %d tickets for $%d\n", possible[0].first, possible[0].second);
+  }
 }
 
 int main(){
-  ios::sync_with_stdio(0);
-  cin.tie(0);
   solve();
   return 0;
 }

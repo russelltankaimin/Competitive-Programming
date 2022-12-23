@@ -69,11 +69,21 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int cap, big, small; cin >> cap >> big >> small;
+  int t = (cap / big) * big;
+  while (t >= 0 && (cap - t) % small != 0) {
+    t -= big;
+  }
+  if (t >= 0) {
+    cout << t / big << " " << (cap - t) / small << endl;
+  } else if (cap % small == 0) {
+    cout << 0 << " " << cap /small << endl;
+  } else {
+    cout << "Impossible" << endl;
+  }
 }
 
 int main(){
-  ios::sync_with_stdio(0);
-  cin.tie(0);
   solve();
   return 0;
 }

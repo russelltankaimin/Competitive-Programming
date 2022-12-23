@@ -69,11 +69,28 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int n; cin >> n;
+  int nc = 0;
+  int d = 0;
+  int ld = 0;
+  int p = 0;
+  for (int i = 0; i < n; i++){
+    int day; cin >> day;
+    d += (day - ld) * p;
+    p ++;
+    ld = day;
+    if (d >= 20) {
+      nc ++; p = 1;d = 0;
+    }
+  }
+  if (p > 0) {
+    cout << nc + 1 << endl;
+  } else {
+    cout << nc << endl;
+  }
 }
 
 int main(){
-  ios::sync_with_stdio(0);
-  cin.tie(0);
   solve();
   return 0;
 }

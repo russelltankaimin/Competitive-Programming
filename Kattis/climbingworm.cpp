@@ -69,11 +69,20 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int a, b, c; cin >> a >> b >> c;
+  int climbs = 0;
+  while (c > 0) {
+    c -= a;
+    climbs++;
+    if (c <= 0) {
+      break;
+    }
+    c += b;
+  }
+  cout << climbs << endl;
 }
 
 int main(){
-  ios::sync_with_stdio(0);
-  cin.tie(0);
   solve();
   return 0;
 }

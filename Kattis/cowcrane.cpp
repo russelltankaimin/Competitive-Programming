@@ -69,11 +69,49 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int m,l, M, L, tm, tl; cin >> m >> l >> M >> L >> tm >> tl;
+  int crane = 0;
+  int t = 0;
+  if (tm > tl) {
+    // L more urgent;
+    crane = l;
+    t += abs(l);
+    t += abs(L - l);
+    crane = L;
+    if (t > tl) {
+      cout << "impossible" << endl;
+      return;
+    } else {
+      t += abs(L - m);
+      crane = m;
+      t += abs(M - m);
+      if (t > tm) {
+        cout << "impossible" << endl;
+      } else {
+        cout << "possible" << endl;
+      }
+    }
+  } else {
+    crane = m;
+    t += abs(m);
+    t += abs(M - m);
+    crane = M;
+    if (t > tm) {
+      cout << "impossible" << endl;
+    } else {
+      t += abs(M - l);
+      crane = l;
+      t += abs(L - l);
+      if (t > tl) {
+        cout << "possible" << endl;
+      } else {
+        cout << "possible" << endl;
+      }
+    }
+  }
 }
 
 int main(){
-  ios::sync_with_stdio(0);
-  cin.tie(0);
   solve();
   return 0;
 }

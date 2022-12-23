@@ -68,12 +68,40 @@ void debug(T a, bool submit){
   cout <<(!submit ? " ]" : "")<< endl;
 }
 
+int score(char a, bool dom) {
+  if (a == 'A') {
+    return 11;
+  } else if (a == 'K') {
+    return 4;
+  } else if (a == 'Q') {
+    return 3;
+  } else if (a == 'J') {
+    return dom ? 20 : 2;
+  } else if (a == 'T') {
+    return 10;
+  } else if (a == '9') {
+    return dom ? 14 : 0;
+  } else {
+    return 0;
+  }
+}
+
 void solve() {
+  int N; cin >> N;
+  char dom; cin >> dom;
+  int pts = 0;
+  for (int i = 0; i < 4 * N; i++) {
+    string a; cin >> a;
+    if (a[1] == dom) {
+      pts += score(a[0], true);
+    } else {
+      pts += score(a[0], false);
+    }
+  }
+  cout << pts << endl;
 }
 
 int main(){
-  ios::sync_with_stdio(0);
-  cin.tie(0);
   solve();
   return 0;
 }

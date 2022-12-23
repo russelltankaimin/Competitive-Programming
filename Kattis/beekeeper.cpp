@@ -69,11 +69,28 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int T; 
+  while (cin >> T && T != 0) {
+    int freq = INT_MIN;
+    string s; string maxword;
+    for (int i = 0; i < T; i++) {
+      cin >> s;
+      int ct = 0;
+      for (int j = 0; j < s.length() - 2 + 1; j++) {
+        if (s[j] == s[j + 1] && (s[j] == 'a' || s[j] == 'e' || s[j] == 'i'||s[j] == 'o'||s[j] == 'u'||s[j] == 'y')) {
+          ct++;
+        }
+      }
+      if (ct > freq) {
+        maxword = s;
+        freq = ct;
+      }
+    }
+    cout << maxword << endl;
+  }
 }
 
 int main(){
-  ios::sync_with_stdio(0);
-  cin.tie(0);
   solve();
   return 0;
 }
