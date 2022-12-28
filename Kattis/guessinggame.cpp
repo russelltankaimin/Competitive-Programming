@@ -72,6 +72,31 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int g;
+  string r;
+  int low=0;
+  int hi=INT_MAX;
+  int ans;
+  while (true) {
+    cin >> g;
+    if (g == 0) return;
+    getline(cin, r);
+    if (r == "too high") {
+      hi = min(hi,g);
+    } else if (r == "too low") {
+      low = max(low, g);
+    } else if (r == "right on") {
+      ans = g;
+      if (hi <= low || hi <= ans || low >= hi || low >= ans) {
+        cout << "Stan is dishonest" << endl;;
+      } else {
+        cout << "Stan may be honest" << endl;
+      }
+      low=0;
+      hi=INT_MAX;
+      ans=0;
+    }
+  }
 }
 
 int main(){

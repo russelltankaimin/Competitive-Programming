@@ -72,6 +72,26 @@ void debug(T a, bool submit){
 }
 
 void solve() {
+  int n; long long k; cin >> n >> k;
+  vector<pair<int, int>> p;
+  for (int i = 0; i < n; i++) {
+    long long a, b; cin >> a >> b;
+    a = max(a - k, 0LL);
+    p.pb({a, 0});
+    p.pb({b, 1});
+  }
+  sort(ALL(p));
+  long long max_overlap = 0;
+  long long overlap = 0;
+  for (auto c : p) {
+    if (c.second) {
+      overlap--;
+    } else {
+      overlap++;
+    }
+    max_overlap = max(max_overlap, overlap);
+  }
+  cout << max_overlap << endl;
 }
 
 int main(){
