@@ -1,10 +1,8 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-struct DSU {
+#pragma once
+struct Union_Find {
   vector<int> parent;
   vector<int> rank;
-  DSU(int n) {
+  Union_Find(int n) {
     parent = vector<int>(n, -1);
     rank = vector<int>(n, 1);
   }

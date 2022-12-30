@@ -1,18 +1,4 @@
-#include "bits/stdc++.h"
-
-using namespace std;
-
-typedef long long ll;
-typedef bitset<22> BITS;
-typedef vector<int> vi;
-typedef vector<vi> vvi;
-typedef vector<vector<vector<int>>> vv3d;
-#define ALL(x) x.begin(),x.end()
-#define UNIQUE(x) (x).resize(unique(ALL(x)) - x.begin())
-#define pb push_back
-#define pf push_front
-#define FOR(init, exc,itr) for(int i = init; i < exc; i+=itr)
-
+#pragma once
 template<typename T>
 struct teque {
   deque<T> front;
