@@ -88,8 +88,30 @@ void debug(T a, bool submit){
   cout <<(!submit ? " ]" : "")<< endl;
 }
 
+int sumofdigits(int k) {
+  int s = 0;
+  while (k > 0) {
+    s += k % 10;
+    k /= 10;
+  }
+  return s;
+}
 void solve() {
-
+  while(true) {
+    int p; cin >> p;
+    if (p == 0) {
+      break;
+    }
+    int ps = sumofdigits(p);
+    int k = 11;
+    while (true) {
+      if (sumofdigits(k * p) == ps) {
+        cout << k << endl;
+        break;
+      }
+      k++;
+    }
+  }
 }
 
 int main(){

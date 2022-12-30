@@ -87,9 +87,64 @@ void debug(T a, bool submit){
   }
   cout <<(!submit ? " ]" : "")<< endl;
 }
+struct hash_pair {
+    template <class T1, class T2>
+    size_t operator()(const pair<T1, T2>& p) const {
+        auto hash1 = hash<T1>{}(p.first);
+        auto hash2 = hash<T2>{}(p.second);
+        if (hash1 != hash2) {
+            return hash1 ^ hash2;
+        }
+          return hash1;
+    }
+};
+
+void printMapPair(unordered_map<pair<int, int> , long long, hash_pair> a) {
+  for (auto p : a) {
+    printf("(%d, %d) => %lld\n", p.first.first, p.first.second, p.second);
+  }
+}
 
 void solve() {
-
+  while(true) {
+    int N; cin >> N;
+    if (N == 0) {
+      break;
+    } else {
+      int curr = -1;
+      long long hi = LONG_MIN;
+      unordered_map<pair<int, int>, long long, hash_pair> umap;
+      for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < N; j++) {
+          if (j == 0) {
+            cin >> curr;
+            continue;
+          } else {
+            int p;
+            cin >> p;
+            pair<int, int> pp = {curr, p};
+            if (umap.count(pp) == 0) {
+              umap[pp] = 1;
+            } else {
+              umap[pp]++;
+            }
+            hi = max(hi, umap[pp]);
+            curr = p;
+          }
+        }
+      }
+      long long max = LONG_MIN;
+      long long ans = 0;
+      cout << "highest count " << hi << endl;
+      printMapPair(umap);
+      for (auto p : umap) {
+        if (p.second == hi) {
+          ans++;
+        }
+      }
+      cout << ans <<  endl;
+    }
+  }
 }
 
 int main(){
