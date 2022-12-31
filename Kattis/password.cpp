@@ -88,67 +88,20 @@ void debug(T a, bool submit){
   cout <<(!submit ? " ]" : "")<< endl;
 }
 
-struct Person {
-  string name;
-  vector<string> h;
-};
-
-vector<string> process(string h) {
-  vector<string> a;
-  string name = "";
-  for (int i = 0; i < h.length(); i++) {
-    if (i == 0 || h[i] != '-') {
-      name.pb(h[i]);
-    } else {
-      a.pb(name);
-      name = "";
-    }
-  }
-  a.pb(name);
-  reverse(ALL(a));
-  while (a.size() != 10) {
-    a.pb("middle");
-  }
-//  printVector(a);
-  return a;
-}
-
 void solve() {
   int T; cin >> T;
-  unordered_map<string, int> hhh;
-  hhh["upper"] = 3;
-  hhh["middle"] = 2;
-  hhh["lower"] = 1;
-  while (T--) {
-    int n; cin >> n;
-    vector<Person> person;
-    for (int i = 0; i < n; i++) {
-      string name; cin >> name;
-      string hierarcy; cin >> hierarcy;
-      string c; cin >> c;
-      vector<string> hh = process(hierarcy);
-      person.pb({name.substr(0, name.length() - 1), hh});
-    }
-    sort(ALL(person), [&](Person a, Person b) {
-      vector<string> h1 = a.h;
-      vector<string> h2 = b.h;
-      bool same = true;
-      for (int i = 0; i < min(h1.size(), h2.size()); i++) {
-        if (hhh[h1[i]] > hhh[h2[i]]) {
-          return true;
-        } else if (hhh[h1[i]] < hhh[h2[i]]) {
-          return false;
-        } else {
-          continue;
-        }
-      }
-      return lexicographical_compare(ALL(a.name), ALL(b.name));
-      });
-    for (Person p : person) {
-      cout << p.name << endl;
-    }
-    cout << "==============================" << endl;
+  vector<double> probs;
+  double E = 0;
+  while(T--) {
+    string pwd; double p; cin >> pwd >> p;
+    probs.pb(p);
   }
+  sort(probs.rbegin(), probs.rend());
+  for (int i = 1; i <= probs.size(); i++) {
+    E += probs[i - 1] * i;
+  }
+  cout << fixed; cout.precision(5);
+  cout << E << endl;
 }
 
 int main(){
