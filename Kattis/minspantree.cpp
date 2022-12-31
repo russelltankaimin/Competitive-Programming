@@ -140,11 +140,9 @@ here:
       vector<vector<int>> adj = vector<vector<int>>(n, vector<int>());
       for (int i = 0; i < m; i++) {
         int a, b; cin >> a >> b; int w; cin >> w;
-//        cout << a << " " << b << " " << w << endl;
         adj[a].pb(b); adj[b].pb(a);
         edges.pb({a < b ? a : b, a < b ? b : a, w});
       }
-//      cout << "CONNECTED" << endl;
       DSU dsu = DSU(n);
       vector<Edge> mst;
       sort(ALL(edges), [&](Edge a, Edge b) {
