@@ -3,7 +3,7 @@ using namespace std;
 
 typedef long long ll;
 typedef bitset<22> BITS;
-typedef vector<ll> vi;
+typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef vector<vector<vector<int>>> vv3d;
 #define ALL(x) x.begin(),x.end()
@@ -88,73 +88,37 @@ void debug(T a, bool submit){
   cout <<(!submit ? " ]" : "")<< endl;
 }
 
-struct Vertex {
-  int x;
-  int y;
-  ll w;
-  bool operator()(const Vertex &a, const Vertex &b) {
-    return a.w > b.w;
-  }
+template<typename T>
+struct Point {
+	typedef Point P;
+	T x, y;
+	explicit Point(T x=0, T y=0) : x(x), y(y) {}
+	P operator-(P p) const { return P(x-p.x, y-p.y); }
+	T cross(P p) const { return x*p.y - y*p.x; }
+	T cross(P a, P b) const { return (a-*this).cross(b-*this); }
 };
 
+typedef Point<long double> P;
+
+template<typename T>
+T polygonArea2(vector<Point<T>>& v) {
+	T a = v.back().cross(v[0]);
+	for(int i = 0; i < v.size() - 1; i++) a += v[i].cross(v[i+1]);
+	return a;
+}
+
 void solve() {
-  int R, C; cin >> R >> C;
-  vvi grid; grid.assign(R, vector<ll>(1001, 0));
-  vvi dist; dist.assign(R, vector<ll>(1001, LONG_MAX));
-  for (int i = 0; i < R; i++) {
-    for (int j = 0; j < C; j++) {
-      cin >> grid[i][j];
+  int T; cin >> T;
+  while (T--) {
+    int Pi; cin >> Pi;
+    vector<P> pts;
+    for (int i = 0; i < Pi; i++) {
+      long double a, b; cin >> a >> b;
+      pts.pb(P(a,b));
     }
+    long double area = polygonArea2(pts) / 2;
+    cout << fixed << setprecision(1) << abs(area) << endl;
   }
-  dist[0][0] = 0;
-  priority_queue<Vertex, vector<Vertex>, Vertex> pq;
-  Vertex st; st.x = 0; st.y = 0; st.w = 0;
-  pq.push(st);
-  while (!pq.empty()) {
-    Vertex t = pq.top(); pq.pop();
-    if (t.w > dist[t.x][t.y]) continue;
-    if (t.x >= 1) {
-      ll nc = grid[t.x - 1][t.y] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x - 1][t.y]) {
-        dist[t.x - 1][t.y] = nc;
-        Vertex v; v.x = t.x - 1; v.y = t.y; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.x + 1 < R) {
-      ll nc = grid[t.x + 1][t.y] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x + 1][t.y]) {
-        dist[t.x + 1][t.y] = nc;
-        Vertex v; v.x = t.x + 1; v.y = t.y; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.y >= 1) {
-      ll nc = grid[t.x][t.y - 1] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x][t.y - 1]) {
-        dist[t.x][t.y - 1] = nc;
-        Vertex v; v.x = t.x; v.y = t.y - 1; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.y + 1 < C) {
-      ll nc = grid[t.x][t.y + 1] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < grid[t.x][t.y + 1]) {
-        dist[t.x][t.y + 1] = nc;
-        Vertex v; v.x = t.x; v.y = t.y + 1; v.w = nc;
-        pq.push(v);
-      }
-    }
-  }
-  cout << dist[R - 1][C - 1] << endl;
 }
 
 int main(){
