@@ -3,7 +3,7 @@ using namespace std;
 
 typedef long long ll;
 typedef bitset<22> BITS;
-typedef vector<ll> vi;
+typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef vector<vector<vector<int>>> vv3d;
 #define ALL(x) x.begin(),x.end()
@@ -88,73 +88,24 @@ void debug(T a, bool submit){
   cout <<(!submit ? " ]" : "")<< endl;
 }
 
-struct Vertex {
-  int x;
-  int y;
-  ll w;
-  bool operator()(const Vertex &a, const Vertex &b) {
-    return a.w > b.w;
-  }
-};
-
 void solve() {
-  int R, C; cin >> R >> C;
-  vvi grid; grid.assign(R, vector<ll>(1001, 0));
-  vvi dist; dist.assign(R, vector<ll>(1001, LONG_MAX));
-  for (int i = 0; i < R; i++) {
-    for (int j = 0; j < C; j++) {
-      cin >> grid[i][j];
-    }
+  int M; cin >> M;
+  unordered_map<string, vector<int>> umap;
+  while (M--) {
+    string ctry; int yr ; cin >> ctry >> yr;
+    if (umap.count(ctry) == 0) umap[ctry] = {yr};
+    else umap[ctry].pb(yr);
   }
-  dist[0][0] = 0;
-  priority_queue<Vertex, vector<Vertex>, Vertex> pq;
-  Vertex st; st.x = 0; st.y = 0; st.w = 0;
-  pq.push(st);
-  while (!pq.empty()) {
-    Vertex t = pq.top(); pq.pop();
-    if (t.w > dist[t.x][t.y]) continue;
-    if (t.x >= 1) {
-      ll nc = grid[t.x - 1][t.y] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x - 1][t.y]) {
-        dist[t.x - 1][t.y] = nc;
-        Vertex v; v.x = t.x - 1; v.y = t.y; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.x + 1 < R) {
-      ll nc = grid[t.x + 1][t.y] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x + 1][t.y]) {
-        dist[t.x + 1][t.y] = nc;
-        Vertex v; v.x = t.x + 1; v.y = t.y; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.y >= 1) {
-      ll nc = grid[t.x][t.y - 1] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x][t.y - 1]) {
-        dist[t.x][t.y - 1] = nc;
-        Vertex v; v.x = t.x; v.y = t.y - 1; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.y + 1 < C) {
-      ll nc = grid[t.x][t.y + 1] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < grid[t.x][t.y + 1]) {
-        dist[t.x][t.y + 1] = nc;
-        Vertex v; v.x = t.x; v.y = t.y + 1; v.w = nc;
-        pq.push(v);
-      }
-    }
+  int Q; cin >> Q;
+  for (auto &p : umap) {
+    sort(ALL(p.second));
   }
-  cout << dist[R - 1][C - 1] << endl;
+  while(Q--) {
+    string c; cin >> c; int i; cin >> i;
+//    printf("QUERY : %s %d\n", c.c_str(), i);
+//    printVector(umap[c]);
+    cout << umap[c][i - 1] << endl;
+  }
 }
 
 int main(){

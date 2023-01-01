@@ -3,7 +3,7 @@ using namespace std;
 
 typedef long long ll;
 typedef bitset<22> BITS;
-typedef vector<ll> vi;
+typedef vector<int> vi;
 typedef vector<vi> vvi;
 typedef vector<vector<vector<int>>> vv3d;
 #define ALL(x) x.begin(),x.end()
@@ -88,73 +88,49 @@ void debug(T a, bool submit){
   cout <<(!submit ? " ]" : "")<< endl;
 }
 
-struct Vertex {
-  int x;
-  int y;
-  ll w;
-  bool operator()(const Vertex &a, const Vertex &b) {
-    return a.w > b.w;
+vector<string> process(string sounds) {
+  vector<string> ans;
+  string s = "";
+  for (int i = 0; i < sounds.length() + 1; i++) {
+    if (i == sounds.length() || sounds[i] == ' ') {
+      ans.pb(s);
+      s = "";
+    } else {
+      s.pb(sounds[i]);
+    }
   }
-};
+  return ans;
+}
 
 void solve() {
-  int R, C; cin >> R >> C;
-  vvi grid; grid.assign(R, vector<ll>(1001, 0));
-  vvi dist; dist.assign(R, vector<ll>(1001, LONG_MAX));
-  for (int i = 0; i < R; i++) {
-    for (int j = 0; j < C; j++) {
-      cin >> grid[i][j];
+  int T; cin >> T;
+  while(T--) {
+    string sounds; getline(cin, sounds);
+    if (sounds == "") getline(cin, sounds);
+    vector<string> s = process(sounds);
+    unordered_map<string, vector<int>> umap;
+    vector<int> blocked; blocked.assign(s.size(), false);
+    string ss;
+    for (int i = 0; i < s.size(); i++) {
+      if (umap.count(s[i]) == 0) umap[s[i]] = {i};
+      else umap[s[i]].pb(i);
     }
+    while(true) {
+      getline(cin,ss);
+      if (ss.compare("what does the fox say?") == 0) {
+        break;
+      }
+      vector<string> cmd = process(ss);
+      for (int i = 0; i < umap[cmd[2]].size(); i++) {
+        blocked[umap[cmd[2]][i]] = true;
+      }
+    }
+    vector<string> printt;
+    for (int i = 0; i < s.size(); i++) {
+      if (!blocked[i]) printt.pb(s[i]);
+    }
+    printVector<string>(printt);
   }
-  dist[0][0] = 0;
-  priority_queue<Vertex, vector<Vertex>, Vertex> pq;
-  Vertex st; st.x = 0; st.y = 0; st.w = 0;
-  pq.push(st);
-  while (!pq.empty()) {
-    Vertex t = pq.top(); pq.pop();
-    if (t.w > dist[t.x][t.y]) continue;
-    if (t.x >= 1) {
-      ll nc = grid[t.x - 1][t.y] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x - 1][t.y]) {
-        dist[t.x - 1][t.y] = nc;
-        Vertex v; v.x = t.x - 1; v.y = t.y; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.x + 1 < R) {
-      ll nc = grid[t.x + 1][t.y] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x + 1][t.y]) {
-        dist[t.x + 1][t.y] = nc;
-        Vertex v; v.x = t.x + 1; v.y = t.y; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.y >= 1) {
-      ll nc = grid[t.x][t.y - 1] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < dist[t.x][t.y - 1]) {
-        dist[t.x][t.y - 1] = nc;
-        Vertex v; v.x = t.x; v.y = t.y - 1; v.w = nc;
-        pq.push(v);
-      }
-    }
-    if (t.y + 1 < C) {
-      ll nc = grid[t.x][t.y + 1] - grid[t.x][t.y];
-      if (nc <= 0) nc = 0;
-      nc = max(nc, t.w);
-      if (nc < grid[t.x][t.y + 1]) {
-        dist[t.x][t.y + 1] = nc;
-        Vertex v; v.x = t.x; v.y = t.y + 1; v.w = nc;
-        pq.push(v);
-      }
-    }
-  }
-  cout << dist[R - 1][C - 1] << endl;
 }
 
 int main(){
