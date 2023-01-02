@@ -89,7 +89,6 @@ void debug(T a, bool submit){
 }
 
 vector<vector<char>> process(string s) {
-  cout << "Start processing" << endl;
   vector<vector<char>> key;
   key.assign(5, vector<char>(5, 0));
   unordered_set<char> hashset;
@@ -125,18 +124,62 @@ vector<vector<char>> process(string s) {
   return key;
 }
 
+string encrypt(string s, vector<vector<char>> &key, unordered_map<char, pair<int, int>> &umap) {
+  assert(s.length() == 2);
+//  cout << "GOING TO ENCRYPT " << s << endl;
+  pair<int, int> loc1 = umap[s[0]];
+  pair<int, int> loc2 = umap[s[1]];
+  if (loc1.first == loc2.first) {
+    s[0] = key[loc1.first][(loc1.second + 1) % 5];
+    s[1] = key[loc2.first][(loc2.second + 1) % 5];
+  } else if (loc1.second == loc2.second) {
+    s[0] = key[(loc1.first + 1) % 5][loc1.second];
+    s[1] = key[(loc2.first + 1) % 5][loc2.second];
+  } else {
+    s[0] = key[loc1.first][loc2.second];
+    s[1] = key[loc2.first][loc1.second];
+  }
+//  cout << "RESULT " << s << endl;
+  return s;
+}
+
 void solve() {
   string s; getline(cin, s);
   if (s == "") getline(cin, s);
   vector<vector<char>> key = process(s);
-  printMatrix<char>(key);
+//  printMatrix<char>(key);
   string pt; getline(cin, pt);
   if (pt == "") getline(cin, pt);
   string pt1 = "";
   for (int i = 0; i < pt.length(); i++) {
     if (pt[i] != ' ') pt1.pb(pt[i]);
   }
-  
+  unordered_map<char, pair<int, int>> umap;
+  for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 5; j++) {
+      umap[key[i][j]] = {i, j};
+    }
+  }
+  vector<string> digraphs;
+  for (int i = 0; i < pt1.length(); i+=2) {
+    string k = pt1.substr(i, 2);
+    string c = "";
+    if (i == pt1.length() - 1) {
+      c.pb(pt1[i]);
+      c.pb('x');
+      digraphs.pb(encrypt(c, key, umap));
+    } else if (k[0] == k[1]) {
+      c.pb(k[0]); c.pb('x');
+      digraphs.pb(encrypt(c, key, umap));
+      i--;
+    } else {
+      digraphs.pb(encrypt(k, key, umap));
+    }
+  }
+  for (string s : digraphs) {
+    cout << (char)toupper(s[0]) << (char)toupper(s[1]);
+  }
+  cout << endl;
 }
 
 int main(){
